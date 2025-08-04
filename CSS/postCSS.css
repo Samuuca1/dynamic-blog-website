@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Chewy&family=Miniver&family=Vibur&display=swap');
+
+.backvideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: fill;
+    z-index: -1;
+}
+
+body {
+    color: rgb(5, 5, 5);
+    padding: 10px;
+    margin: 20px 200px 20px 300px;
+    background-color: rgb(53, 35, 134);
+    align-items: center;
+    text-align: center;
+    display: flex;
+}
+
+h1 {
+    color: rgb(38, 76, 210);
+    text-align: center;
+    font-family: "Miniver";
+}
+
+form {
+    border-left: solid 5px #2d53e9b5;
+    border-right: solid 5px #2d53e9a9;
+    flex-direction: column;
+    background: rgba(78, 77, 77, 0.352);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+    color: white
+}
+
+form input,
+textarea {
+    width: 100%;
+    padding: auto;
+    font-size: 20px;
+    border: 1px solid #4d71e8;
+    border-radius: 4px;
+    color: #000000;
+    margin: auto;
+}
+
+form button {
+    padding: 10px;
+    margin-top: 4px;
+    font-size: 1rem;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #3a78c2;
+}

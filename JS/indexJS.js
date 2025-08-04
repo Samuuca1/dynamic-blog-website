@@ -1,29 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
-  let postsContainer = document.getElementById("posts-container");
-  let posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+  const postsContainer = document.getElementById("posts-container");
+  const postForm = document.getElementById("postForm");
+  const editForm = document.getElementById("editForm");
 
-  if (posts.length === 0) {
-    postsContainer.innerHTML = "<p>No blog posts yet.</p>";
-    return;
+  // Homepage: Show Posts
+  if (postsContainer) {
+    const posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+
+    if (posts.length === 0) {
+      postsContainer.innerHTML = "<p>No blog posts yet.</p>";
+      return;
+    }
+
+    posts.reverse().forEach(post => {
+      const postDiv = document.createElement("div");
+      postDiv.className = "post";
+
+      postDiv.innerHTML = `
+        <h2>${post.title}</h2>
+        <p>${post.content}</p>
+        ${post.image ? `<img src="${post.image}" alt="Post image">` : ""}
+        <div class="actions">
+          <button onclick="editPost('${post.id}')">Edit</button>
+          <button onclick="deletePost('${post.id}')">Delete</button>
+        </div>
+      `;
+
+      postsContainer.appendChild(postDiv);
+    });
   }
 
-  posts.reverse().forEach(post => {
-    let postDiv = document.createElement("div");
-    postDiv.className = "post";
-
-    postDiv.innerHTML = `
-      <h2>${post.title}</h2>
-      <p>${post.content}</p>
-      ${post.image ? `<img src="${post.image}" alt="Post image">` : ""}
-    `;
-
-    postsContainer.appendChild(postDiv);
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const postForm = document.getElementById("postForm");
-
+  // Create Post Form
   if (postForm) {
     postForm.addEventListener("submit", e => {
       e.preventDefault();
@@ -38,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const newPost = {
+        id: crypto.randomUUID(),
         title,
         content,
         image: image || null,
@@ -52,13 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "index.html";
     });
   }
-});
 
-
-document.addEventListener("DOMContentLoaded", () => {
-  const editForm = document.getElementById("editForm");
-
- if (editForm) {
+  // Edit Post Form
+  if (editForm) {
     const params = new URLSearchParams(window.location.search);
     const postId = params.get("id");
     const posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
@@ -87,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// Global Delete/Edit Functions
 function deletePost(id) {
   if (confirm("Are you sure you want to delete this post?")) {
     const posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
@@ -97,5 +102,5 @@ function deletePost(id) {
 }
 
 function editPost(id) {
-  window.location.href = `edit.html?id=${id}`;
+  window.location.href = `post.html?id=${id}`;
 }
