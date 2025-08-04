@@ -1,0 +1,37 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Post</title>
+    <link rel="stylesheet" href="newpostCSS.css" />
+    <script src="JS/newpostJS.js" defer></script>
+</head>
+
+<body>
+    <header>
+        <h1>Create New Post</h1>
+    </header>
+
+    <main>
+        <form id="postform" class="postform">
+            <label>
+
+                <input type="text" id="title" required />
+            </label>
+
+            <label>
+
+                <textarea id="content" rows="8" required></textarea>
+            </label>
+
+            <label>
+                <input type="url" id="image" placeholder="https://example.com/image.jpg" />
+            </label>
+
+            <button type="submit">Post</button>
+        </form>
+    </main>
+</body>
+
+</html>
