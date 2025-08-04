@@ -1,29 +1,36 @@
 document.addEventListener("DOMContentLoaded", () => {
-  let postsContainer = document.getElementById("posts-container");
-  let posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+  const postsContainer = document.getElementById("posts-container");
+  const postForm = document.getElementById("postForm");
+  const editForm = document.getElementById("editForm");
 
-  if (posts.length === 0) {
-    postsContainer.innerHTML = "<p>No blog posts yet.</p>";
-    return;
+  // Homepage: Show Posts
+  if (postsContainer) {
+    const posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+
+    if (posts.length === 0) {
+      postsContainer.innerHTML = "<p>No blog posts yet.</p>";
+      return;
+    }
+
+    posts.reverse().forEach(post => {
+      const postDiv = document.createElement("div");
+      postDiv.className = "post";
+
+      postDiv.innerHTML = `
+        <h2>${post.title}</h2>
+        <p>${post.content}</p>
+        ${post.image ? `<img src="${post.image}" alt="Post image">` : ""}
+        <div class="actions">
+          <button onclick="editPost('${post.id}')">Edit</button>
+          <button onclick="deletePost('${post.id}')">Delete</button>
+        </div>
+      `;
+
+      postsContainer.appendChild(postDiv);
+    });
   }
 
-  posts.reverse().forEach(post => {
-    let postDiv = document.createElement("div");
-    postDiv.className = "post";
-
-    postDiv.innerHTML = `
-      <h2>${post.title}</h2>
-      <p>${post.content}</p>
-      ${post.image ? `<img src="${post.image}" alt="Post image">` : ""}
-    `;
-
-    postsContainer.appendChild(postDiv);
-  });
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  const postForm = document.getElementById("postForm");
-
+  // Create Post Form
   if (postForm) {
     postForm.addEventListener("submit", e => {
       e.preventDefault();
@@ -38,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const newPost = {
+        id: crypto.randomUUID(),
         title,
         content,
         image: image || null,
@@ -52,4 +60,47 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "index.html";
     });
   }
+
+  // Edit Post Form
+  if (editForm) {
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get("id");
+    const posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+    const post = posts.find(p => p.id === postId);
+
+    if (!post) {
+      editForm.innerHTML = "<p>Post not found.</p>";
+      return;
+    }
+
+    document.getElementById("edit-title").value = post.title;
+    document.getElementById("edit-content").value = post.content;
+    document.getElementById("edit-image").value = post.image || "";
+
+    editForm.addEventListener("submit", e => {
+      e.preventDefault();
+
+      post.title = document.getElementById("edit-title").value.trim();
+      post.content = document.getElementById("edit-content").value.trim();
+      post.image = document.getElementById("edit-image").value.trim();
+
+      localStorage.setItem("blogPosts", JSON.stringify(posts));
+      alert("Post updated!");
+      window.location.href = "index.html";
+    });
+  }
 });
+
+// Global Delete/Edit Functions
+function deletePost(id) {
+  if (confirm("Are you sure you want to delete this post?")) {
+    const posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+    const filtered = posts.filter(p => p.id !== id);
+    localStorage.setItem("blogPosts", JSON.stringify(filtered));
+    window.location.reload();
+  }
+}
+
+function editPost(id) {
+  window.location.href = `post.html?id=${id}`;
+}
