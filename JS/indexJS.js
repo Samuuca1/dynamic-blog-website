@@ -53,3 +53,49 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const editForm = document.getElementById("editForm");
+
+ if (editForm) {
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get("id");
+    const posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+    const post = posts.find(p => p.id === postId);
+
+    if (!post) {
+      editForm.innerHTML = "<p>Post not found.</p>";
+      return;
+    }
+
+    document.getElementById("edit-title").value = post.title;
+    document.getElementById("edit-content").value = post.content;
+    document.getElementById("edit-image").value = post.image || "";
+
+    editForm.addEventListener("submit", e => {
+      e.preventDefault();
+
+      post.title = document.getElementById("edit-title").value.trim();
+      post.content = document.getElementById("edit-content").value.trim();
+      post.image = document.getElementById("edit-image").value.trim();
+
+      localStorage.setItem("blogPosts", JSON.stringify(posts));
+      alert("Post updated!");
+      window.location.href = "index.html";
+    });
+  }
+});
+
+function deletePost(id) {
+  if (confirm("Are you sure you want to delete this post?")) {
+    const posts = JSON.parse(localStorage.getItem("blogPosts")) || [];
+    const filtered = posts.filter(p => p.id !== id);
+    localStorage.setItem("blogPosts", JSON.stringify(filtered));
+    window.location.reload();
+  }
+}
+
+function editPost(id) {
+  window.location.href = `edit.html?id=${id}`;
+}

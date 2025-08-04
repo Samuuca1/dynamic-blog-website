@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="CSS/postCSS.css" />
+    <script src="JS/indexJS.js"></script>
+</head>
+
+<body>
+    <div class="background">
+        <video autoplay loop muted plays-inline class="backvideo">
+            <source src="video-image/9665235-hd_1920_1080_25fps.mp4" type="video/mp4">
+        </video>
+    </div>
+    <header>
+        <h1>Edit Post</h1>
+        <a href="index.html" class="new-post-btn">← Back to Home</a>
+    </header>
+
+    <main>
+        <form id="editForm">
+            <label for="edit-title">Title *</label>
+            <input type="text" id="edit-title" required />
+
+            <label for="edit-content">Content *</label>
+            <textarea id="edit-content" rows="6" required></textarea>
+
+            <label for="edit-image">Image URL</label>
+            <input type="url" id="edit-image" />
+
+            <button type="submit">Update Post</button>
+        </form>
+    </main>
+
+
+</body>
+
+</html>
