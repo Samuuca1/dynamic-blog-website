@@ -16,7 +16,7 @@ body {
   border-left: solid 5px #2d53e9b5;
   border-right: solid 5px #2d53e9a9;
   padding-left: 5px;
-  background-image: url("video-image/darkgame.jpg");
+  background-image: src("video-image/darkgame.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
